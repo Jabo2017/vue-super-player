@@ -75,12 +75,12 @@ export default {
 		// 指定h5 播发器：【ali、ck、tc、bd】
 		h5player: {
 			type: String,
-			default: 'bd'
+			default: 'tc'
 		},
 		// flash 播放器：默认 ck
 		flashplayer: {
 			type: String,
-			default: 'bd'
+			default: 'tc'
 		},
 		playsinline: {
 			// H5是否内置播放，有的Android浏览器不起作用。

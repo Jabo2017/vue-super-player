@@ -17,10 +17,10 @@
 
 <script>
 /* eslint-disable */
-import spuerPlayer from './../../lib/vue-super-player.umd.min.js';
+// import spuerPlayer from './../../lib/vue-super-player.umd.min.js';
 // import './../../lib/vue-aliplay-player.css';
 
-// import spuerPlayer from './../../packages/vue-super-player/src/player.vue';
+import spuerPlayer from './../../packages/vue-super-player/src/player.vue';
 
 export default {
 	name: 'Home',
