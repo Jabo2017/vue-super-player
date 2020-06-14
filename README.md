@@ -1,37 +1,126 @@
 # vue-super-player
 
 #### 介绍
-超级播放器
-
-#### 软件架构
-软件架构说明
+超级播放器:基于多个内核播放器整合开发
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```
+npm i vue-super-player -save
+```
 
 #### 使用说明
+```
+import player from 'vue-super-player'
+import 'vue-super-player/lib/vue-super-player.css'
+```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 参数
+```
+	// 播放器样式：内联样式
+	playStyle: {
+		type: String,
+		default: 'width:100%; height:100%'
+	},
+	// 视频源
+	source: {
+		type: String,
+		default: ''
+	},
+	// 是否是直播视频
+	live: {
+		type: Boolean,
+		default: true
+	},
+	// 播放结束后是否循环播放
+	loop: {
+		type: Boolean,
+		default: false
+	},
+	autoplay: {
+		// 建议 false : 一些浏览器这样会报错
+		// 播放器是否自动播放
+		type: Boolean,
+		default: true
+	},
+	// 设置媒体流的预览图
+	poster: {
+		type: String,
+		default: ''
+	},
+	variable: {  // ck 专属
+		//调用播放器的函数名称
+		type: String,
+		default: 'player'
+	},
+	flash: {
+		// 是否强制使用flashplayer播放
+		type: Boolean,
+		default: false
+	},
+	// 指定h5 播发器：【ali、ck、tc、bd】
+	h5player: {
+		type: String,
+		default: 'bd'
+	},
+	// flash 播放器：默认 ck
+	flashplayer: {
+		type: String,
+		default: 'bd'
+	},
+	playsinline: {
+		// H5是否内置播放，有的Android浏览器不起作用。
+		type: Boolean,
+		default: true
+	},
+	preload: { // ali 专属
+		// 播放器自动加载，目前仅h5可用。
+		type: Boolean,
+		default: true
+	},
+	// Safari浏览器可以启用Hls插件播放，Safari 11除外。
+	useHlsPluginForSafari: {  // ali 专属
+		type: Boolean,
+		default: true
+	},
+	wording: {
+		// tc 专属
+		type: Object,
+		default: () => {
+			return {
+				4: '当前直播流需要flash支持,请开启flash'
+			};
+		}
+	},
+	x5player: {
+		type: Boolean,
+		default: false
+	},
+	stretching: {
+		// bd 专属
+		// 设置播放器缩放方式，缩放方式分为：
+		// 1.none:不缩放；
+		// 2.uniform:添加黑边缩放；
+		// 3. exactfit:改变宽高比缩到最大；
+		// 4.fill:剪切并缩放到最大（默认方式为uniform）
+		type: String,
+		default: 'exactfit'
+	}
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+```
 
 
-#### 码云特技
+#### 方法
+```
+  loadPlayer(url)
+```
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### 版本说明
+1、1.0.0： 初始化版本
+
+### 参考
+1.  [阿里云播放器配置](https://helpcdn.aliyun.com/document_detail/125572.html?spm=a2c4g.11186623.4.1.27961c4cl6VC7x)
+2.  [ckplayer](http://www.ckplayer.com/manualX/23.html)
+3.  [百度播放器](https://cloud.baidu.com/doc/MCT/s/yjwvz4xm8)
+4.  [腾讯播放器](https://cloud.tencent.com/document/product/881/20207)
