@@ -75,12 +75,12 @@ export default {
 		// 指定h5 播发器：【ali、ck、tc、bd】
 		h5player: {
 			type: String,
-			default: 'tc'
+			default: 'bd'
 		},
 		// flash 播放器：默认 ck
 		flashplayer: {
 			type: String,
-			default: 'tc'
+			default: 'bd'
 		},
 		playsinline: {
 			// H5是否内置播放，有的Android浏览器不起作用。
@@ -396,14 +396,109 @@ export default {
 		 */
 		loadByUrl: function(url) {
 			this.loadPlayer(url);
+		},
+		/**
+		 * 播放
+		 */
+		play(){
+			if(this.bdInstance){
+				this.bdInstance.play(); 
+			}
+			if(this.aliInstance){
+				this.aliInstance.play();
+			}
+			if(this.tcInstance){
+				this.tcInstance.play()
+			}
+			if(this.ckInstall){
+				this.ckInstall.videoPlay()
+			}
+		},
+		/**
+		 * 暂停
+		 */
+		pause(){
+			if(this.bdInstance){
+				this.bdInstance.pause(); 
+			}
+			if(this.aliInstance){
+				this.aliInstance.pause();
+			}
+			if(this.tcInstance){
+				this.tcInstance.pause()
+			}
+			if(this.ckInstall){
+				this.ckInstall.videoPause()
+			}
+		},
+		/**
+		 * @param {Boolean} flag
+		 * 设置当前播放器的声音开关。
+		 * Boolean - true : 关闭声音；false : 打开声音
+		 */
+		setMute(flag){
+			if(this.bdInstance){
+				this.bdInstance.setMute(flag); 
+			}
+			if(this.aliInstance){
+				if(flag){
+					this.aliInstance.setVolume(0)
+				}else {
+					this.aliInstance.setVolume(1)
+				}
+			}
+			if(this.tcInstance){
+				this.tcInstance.mute(flag); 
+			}
+			if(this.ckInstall){
+				if(flag){
+					this.ckInstall.videoMute()
+				}else{
+					this.ckInstall.videoEscMute()
+				}
+			}
+		},
+		/**
+		 * @param {Boolean} flag
+		 * 设置当前播放器是否全屏。
+		 * Boolean - true : 全屏；false : 非全屏
+		 */
+		setFullscreen(flag){
+			if(this.bdInstance){
+				this.bdInstance.setFullscreen(flag); 
+			}
+			if(this.aliInstance){ // 仅H5
+				if(flag){
+					this.aliInstance.fullscreenService.requestFullScreen()
+				} else {
+					this.aliInstance.fullscreenService.cancelFullScreen()
+				}
+			}
+			if(this.tcInstance){
+				this.tcInstance.fullscreen(flag); 
+			}
+			if(this.ckInstall){ // ck 支不支持开启全屏，只有退出全屏
+				if(!flag){
+					this.ckInstall.quitFullScreen();
+				}
+			}
 		}
 	},
 	beforeDestroy() {
 		// 移除当前播放器
-		this.aliInstance = null;
+		if(this.bdInstance){
+			this.bdInstance.remove(); 
+			this.bdInstance = null;
+		}
+		if(this.aliInstance){
+			this.aliInstance.dispose();
+			this.aliInstance = null;
+		}
+		if(this.tcInstance){
+			this.tcInstance.destroy();
+			this.tcInstance = null;
+		}
 		this.ckInstall = null;
-		this.bdInstance = null;
-		this.tcInstance = null;
 	}
 };
 </script>

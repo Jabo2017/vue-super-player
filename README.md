@@ -113,11 +113,16 @@ import 'vue-super-player/lib/vue-super-player.css'
 
 #### 方法
 ```
-  loadPlayer(url)
+  1、loadPlayer(url)  // 加载播放器
+  2、play()  // 播放API，ck直播模式不支持 【1.0.1+】
+  3、pause()  // 暂停API，ck直播模式不支持 【1.0.1+】
+  4、setMute()  // 静音API，true : 关闭声音；false : 打开声音，ck直播模式不支持 【1.0.1+】
+  4、setFullscreen()  // 全屏API，true : 全屏；false : 非全屏 ，ck直播模式不支持 【1.0.1+】
 ```
 
 #### 版本说明
 1、1.0.0： 初始化版本
+2、1.0.1   新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
 
 ### 参考
 1.  [阿里云播放器配置](https://helpcdn.aliyun.com/document_detail/125572.html?spm=a2c4g.11186623.4.1.27961c4cl6VC7x)

@@ -2,16 +2,21 @@
 	<div class="home">
 		<img alt="Vue logo" src="../assets/logo.png" />
 
-		<div  style="width: 300px; height: 300px;">
-			<spuerPlayer ref="player" style="width: 400px; height: 400px;" />
+		<div  style="width: 300px; height: 300px; margin-bottom: 30px;">
+			<spuerPlayer ref="player" style="width: 300px; height: 300px;" />
 		</div>
 
-		<div style="width: 400px; height: 400px;">
+		<div style="width: 400px; height: 400px;" v-if="flag">
 			<spuerPlayer ref="player2" style="width: 300px; height: 200px;" />
 		</div>
 
 		<button @click="changeUrl">切换1</button>
 		<button @click="changeUrl2">切换2</button>
+		<button @click="triggePlayer">隐藏2</button>
+		<button @click="playPlayer">播放2</button>
+		<button @click="pausePlayer">暂停2</button>
+		<button @click="fullPlayer">全屏2</button>
+		<button @click="setMute">静音2</button>
 	</div>
 </template>
 
@@ -26,6 +31,11 @@ export default {
 	name: 'Home',
 	components: {
 		spuerPlayer: spuerPlayer
+	},
+	data(){
+		return {
+			flag: true
+		}
 	},
 	mounted() {
 		this.$nextTick(() => {
@@ -43,6 +53,26 @@ export default {
 		},
 		changeUrl2() {
 			this.$refs.player.loadPlayer('rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b');
+		},
+		triggePlayer(){
+			this.flag = !this.flag
+			this.$nextTick(()=>{
+				if(this.flag){
+					this.$refs.player2.loadPlayer('http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8');
+				}
+			})
+		},
+		playPlayer(){
+			this.$refs.player2.play();
+		},
+		pausePlayer(){
+			this.$refs.player2.pause();
+		},
+		fullPlayer(){
+			this.$refs.player2.setFullscreen(true);
+		},
+		setMute(){
+			this.$refs.player2.setMute(true);
 		}
 	}
 };
