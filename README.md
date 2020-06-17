@@ -121,8 +121,11 @@ import 'vue-super-player/lib/vue-super-player.css'
 ```
 
 #### 版本说明
+```
 1、1.0.0： 初始化版本
 2、1.0.1   新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
+
+```
 
 ### 参考
 1.  [阿里云播放器配置](https://helpcdn.aliyun.com/document_detail/125572.html?spm=a2c4g.11186623.4.1.27961c4cl6VC7x)
