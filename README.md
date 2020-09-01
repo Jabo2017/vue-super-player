@@ -117,13 +117,17 @@ import 'vue-super-player/lib/vue-super-player.css'
   2、play()  // 播放API，ck直播模式不支持 【1.0.1+】
   3、pause()  // 暂停API，ck直播模式不支持 【1.0.1+】
   4、setMute()  // 静音API，true : 关闭声音；false : 打开声音，ck直播模式不支持 【1.0.1+】
-  4、setFullscreen()  // 全屏API，true : 全屏；false : 非全屏 ，ck直播模式不支持 【1.0.1+】
+  5、setFullscreen()  // 全屏API，true : 全屏；false : 非全屏 ，ck直播模式不支持 【1.0.1+】
+  6、getStatus() // 返回播放器状态，不同播放器返回参数存在差异 【1.0.2+】
+  7、getDuration() // 返回播放时长,对点播有用，不同播放器返回参数存在差异  【1.0.2+】
+  8、setSeek(time) // 设置目标播放时间，对点播有用【1.0.2+】
 ```
 
 #### 版本说明
 ```
 1、1.0.0： 初始化版本
 2、1.0.1   新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
+3、1.0.2   新增API：getStatus、getDuration、setSeek
 
 ```
 

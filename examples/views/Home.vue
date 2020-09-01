@@ -7,7 +7,7 @@
 		</div>
 
 		<div style="width: 400px; height: 400px;" v-if="flag">
-			<spuerPlayer ref="player2" style="width: 300px; height: 200px;" />
+			<spuerPlayer h5player="ck" ref="player2" style="width: 300px; height: 200px;" />
 		</div>
 
 		<button @click="changeUrl">切换1</button>
@@ -17,6 +17,8 @@
 		<button @click="pausePlayer">暂停2</button>
 		<button @click="fullPlayer">全屏2</button>
 		<button @click="setMute">静音2</button>
+    <button @click="getDuration">播放时长</button>
+    <button @click="getStatus">播放状态</button>
 	</div>
 </template>
 
@@ -73,7 +75,13 @@ export default {
 		},
 		setMute(){
 			this.$refs.player2.setMute(true);
-		}
+		},
+    getDuration(){
+      console.log(this.$refs.player2.getDuration())
+    },
+    getStatus(){
+      console.log(this.$refs.player2.getStatus())
+    }
 	}
 };
 </script>
