@@ -128,7 +128,7 @@ import 'vue-super-player/lib/vue-super-player.css'
 1、1.0.0： 初始化版本
 2、1.0.1   新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
 3、1.0.2   新增API：getStatus、getDuration、setSeek
-
+4、1.0.3   修复bug
 ```
 
 ### 参考

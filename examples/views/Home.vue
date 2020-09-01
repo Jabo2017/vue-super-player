@@ -7,7 +7,7 @@
 		</div>
 
 		<div style="width: 400px; height: 400px;" v-if="flag">
-			<spuerPlayer h5player="ck" ref="player2" style="width: 300px; height: 200px;" />
+			<spuerPlayer ref="player2" style="width: 300px; height: 200px;" />
 		</div>
 
 		<button @click="changeUrl">切换1</button>

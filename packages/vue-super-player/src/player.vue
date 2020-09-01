@@ -511,7 +511,7 @@ export default {
      */
     getDuration(){
       if (this.bdInstance) {
-        return this.bdInstance.getState();
+        return this.bdInstance.getDuration();
       }
       if (this.aliInstance) {
         return this.aliInstance.getDuration();
