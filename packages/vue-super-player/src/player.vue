@@ -524,6 +524,23 @@ export default {
       }
     },
     /**
+     * 获取全屏状态
+     */
+    getFullscreen(){
+      if (this.bdInstance) {
+        return this.bdInstance.getFullscreen();
+      }
+      if (this.aliInstance) {
+        return this.aliInstance.fullscreenService.getIsFullScreen();
+      }
+      if (this.tcInstance) {
+        // 暂不支持
+      }
+      if (this.ckInstall) {
+        // 暂不支持
+      }
+    },
+    /**
      * 设置目标播放时间
      */
     setSeek(time){

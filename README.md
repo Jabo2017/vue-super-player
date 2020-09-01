@@ -121,6 +121,7 @@ import 'vue-super-player/lib/vue-super-player.css'
   6、getStatus() // 返回播放器状态，不同播放器返回参数存在差异 【1.0.2+】
   7、getDuration() // 返回播放时长,对点播有用，不同播放器返回参数存在差异  【1.0.2+】
   8、setSeek(time) // 设置目标播放时间，对点播有用【1.0.2+】
+  9、getFullscreen // 获取全屏状态：仅bd、ali支持【1.0.4+】
 ```
 
 #### 版本说明
@@ -129,6 +130,7 @@ import 'vue-super-player/lib/vue-super-player.css'
 2、1.0.1   新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
 3、1.0.2   新增API：getStatus、getDuration、setSeek
 4、1.0.3   修复bug
+5、1.0.4   新增API：getFullscreen
 ```
 
 ### 参考
