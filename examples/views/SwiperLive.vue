@@ -1,10 +1,10 @@
 <template>
   <div class="wrap">
-    <div class="row" v-show="showFlag">
+    <div :class="['row', [showFlag ? 'show' :'']]" v-show="showFlag">1
       <div class="live" v-for="(item, index) in currentUrlArr" :key="index"><spuerPlayer :source="item" h5player="ali" ref="player" /></div>
     </div>
-    <div class="row" v-show="!showFlag">
-      <div class="live" v-for="(item, index) in nextUrlArr" :key="index"><spuerPlayer :source="item" h5player="ali" ref="player2" /></div>
+    <div :class="['row', [!showFlag ? 'show' :'']]" v-show="!showFlag">2
+      <div class="live" v-for="(item, index) in nextUrlArr" :key="index"><spuerPlayer :source="item" ref="player2" /></div>
     </div>
   </div>
 </template>
@@ -20,14 +20,12 @@ export default {
   data() {
     return {
       urlArr: [
-        'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
-        'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
-        'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
-        'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
-        'http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8',
-        'http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8',
-        'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
-        'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
+        'http://hls01open.ys7.com/openlive/d9d59cc417ad4d3c8757b4960ae0fb8e.m3u8',
+        'http://hls01open.ys7.com/openlive/d7fcdc7971974c529caefffe58179d3a.m3u8',
+        'http://hls01open.ys7.com/openlive/71f04eb9a373430a9c6a1dbd6b4c5e53.m3u8',
+        'http://hls01open.ys7.com/openlive/b169893dbd8d482e9b674cedcae36854.m3u8',
+        'http://hls01open.ys7.com/openlive/fe2cd600533e44c88dd1ff3175699305.m3u8',
+        'http://hls01open.ys7.com/openlive/560ead4dd094428b949b112906fd8575.m3u8',
         'http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8',
         'http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8',
         'http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8',
@@ -35,8 +33,7 @@ export default {
       ],
       currentUrlArr: [],
       nextUrlArr: [],
-      showFlag: true,
-      i: 0
+      showFlag: true
     };
   },
   created() {
@@ -46,30 +43,61 @@ export default {
 
   methods: {
     getPlayUrl() {
-      if(this.urlArr.length <= 4) {
+      if (this.urlArr.length <= 4) {
         this.currentUrlArr = this.urlArr;
-      } else if( (this.i + 1) * 8 <= this.urlArr.length){
-        this.currentUrlArr = this.urlArr.slice(this.i * 8, this.i * 8 + 4);
-        this.nextUrlArr = this.urlArr.slice(this.i * 8 + 4, this.i * 8 + 8);
-        this.i++;
-      } else if(this.i * 8 + 4 <= this.urlArr.length) {
-        this.currentUrlArr = this.urlArr.slice(this.i * 8, this.i * 8 + 4);
-        if(){
-          
+      } else {
+        if (this.showFlag) {
+          if (this.currentUrlArr.length == 0) {
+            this.currentUrlArr = this.urlArr.splice(0, 4);
+            this.$nextTick(() => {
+              this.urlArr = this.urlArr.concat(this.currentUrlArr);
+              this.nextUrlArr = this.urlArr.splice(0, 4);
+              this.$nextTick(() => {
+                this.urlArr = this.urlArr.concat(this.nextUrlArr);
+              });
+              
+              this.$nextTick(() => {
+                this.$refs.player.map(item => {
+                  item.loadPlayer();
+                });
+                this.$refs.player2.map(item => {
+                  item.loadPlayer();
+                });
+                this.player();
+              });
+            });
+          } else {
+            // 展示备用第一个展示，第二个更新
+            this.nextUrlArr = this.urlArr.splice(0, 4);
+            this.$nextTick(() => {
+              this.urlArr = this.urlArr.concat(this.nextUrlArr);
+            });
+            this.$nextTick(() => {
+              this.$refs.player2.map(item => {
+                item.loadPlayer();
+              });
+              this.player();
+            });
+          }
+        } else {
+          // // 展示备用第二个展示，第一个更新
+          this.currentUrlArr = this.urlArr.splice(0, 4);
+          this.urlArr = this.urlArr.concat(this.currentUrlArr);
+          this.$nextTick(() => {
+            this.$refs.player.map(item => {
+              item.loadPlayer();
+            });
+            this.player();
+          });
         }
       }
       
-      this.$nextTick(() => {
-        this.player();
-      });
     },
     player() {
-      this.$refs.player.map(item => {
-        item.loadPlayer();
-      });
-      this.$refs.player2.map(item => {
-        item.loadPlayer();
-      });
+      setTimeout(() => {
+        this.showFlag = !this.showFlag;
+        this.getPlayUrl();
+      }, 10000);
       // this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8');
     }
   }
