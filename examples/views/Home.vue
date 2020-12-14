@@ -6,10 +6,10 @@
 			<spuerPlayer ref="player" style="width: 300px; height: 300px;" />
 		</div>
 
-		<div style="width: 400px; height: 400px;" v-if="flag">
+		<!-- <div style="width: 400px; height: 400px;" v-if="flag">
 			<spuerPlayer ref="player2" style="width: 300px; height: 200px;" />
 		</div>
-
+ -->
 		<button @click="changeUrl">切换1</button>
 		<button @click="changeUrl2">切换2</button>
 		<button @click="triggePlayer">隐藏2</button>
@@ -47,8 +47,9 @@ export default {
 
 	methods: {
 		player() {
-			this.$refs.player.loadPlayer('rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b');
-			this.$refs.player2.loadPlayer('http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8');
+      this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8');
+			// this.$refs.player.loadPlayer('rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b');
+			// this.$refs.player2.loadPlayer('http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8');
 		},
 		changeUrl() {
 			this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8');

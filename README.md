@@ -131,6 +131,7 @@ import 'vue-super-player/lib/vue-super-player.css'
 3、1.0.2   新增API：getStatus、getDuration、setSeek
 4、1.0.3   修复bug
 5、1.0.4   新增API：getFullscreen
+6、1.0.5   修复IOS异常兼容移动端
 ```
 
 ### 参考

@@ -29,7 +29,8 @@ export default {
     bdsdk: {
       // 版本 sdk
       type: String,
-      default: 'https://fjycjd_admin.gitee.io/cdn/bplayer/cyberplayer.js'
+      // default: 'https://fjycjd_admin.gitee.io/cdn/bplayer/cyberplayer.js'
+      default:'https://bce.bdstatic.com/jwplayer/3.5.2/cyberplayer.js'
     },
     ak: {
       // 授权ak
