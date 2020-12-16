@@ -30,7 +30,7 @@ export default {
       // 版本 sdk
       type: String,
       // default: 'https://fjycjd_admin.gitee.io/cdn/bplayer/cyberplayer.js'
-      default:'https://bce.bdstatic.com/jwplayer/3.5.2/cyberplayer.js'
+      default: 'https://bce.bdstatic.com/jwplayer/3.5.2/cyberplayer.js'
     },
     ak: {
       // 授权ak
@@ -510,7 +510,7 @@ export default {
     /**
      * 获取播放时长【获取视频总时长】
      */
-    getDuration(){
+    getDuration() {
       if (this.bdInstance) {
         return this.bdInstance.getDuration();
       }
@@ -527,7 +527,7 @@ export default {
     /**
      * 获取全屏状态
      */
-    getFullscreen(){
+    getFullscreen() {
       if (this.bdInstance) {
         return this.bdInstance.getFullscreen();
       }
@@ -544,7 +544,7 @@ export default {
     /**
      * 设置目标播放时间
      */
-    setSeek(time){
+    setSeek(time) {
       if (this.bdInstance) {
         this.bdInstance.seek(time);
       }
@@ -556,7 +556,7 @@ export default {
         // this.tcInstance.seeked(time);
       }
       if (this.ckInstall) {
-       this.ckInstall.videoSeek(time);
+        this.ckInstall.videoSeek(time);
       }
     }
   },

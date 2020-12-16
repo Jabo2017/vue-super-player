@@ -104,7 +104,7 @@ export default {
 };
 </script>
 
-<style scoped="scoped" lang="scss">
+<style scoped="scoped">
 .wrap {
   display: flex;
   flex-direction: column;
