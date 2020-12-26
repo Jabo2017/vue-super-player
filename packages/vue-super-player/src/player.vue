@@ -19,12 +19,15 @@ export default {
     // 版本 阿里云
     alisdk: {
       type: String,
-      default: 'https://g.alicdn.com/de/prismplayer/2.8.8/aliplayer-min.js'
+      // default: 'https://g.alicdn.com/de/prismplayer/2.8.8/aliplayer-min.js'
+      default: 'https://g.alicdn.com/de/prismplayer/2.9.1/aliplayer-min.js'
     },
     // 版本 腾讯
     tcsdk: {
       type: String,
-      default: 'https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js'
+      // default: 'https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js'
+      // https://cloudcache.tencent-cloud.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js
+      default: 'https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js'
     },
     bdsdk: {
       // 版本 sdk
@@ -579,8 +582,9 @@ export default {
 };
 </script>
 
+<!-- @import 'https://g.alicdn.com/de/prismplayer/2.8.8/skins/default/aliplayer-min.css'; -->
 <style lang="postcss">
-@import 'https://g.alicdn.com/de/prismplayer/2.8.8/skins/default/aliplayer-min.css';
+@import 'https://g.alicdn.com/de/prismplayer/2.9.1/skins/default/aliplayer-min.css';
 .prism-big-play-btn {
   left: 50% !important;
   bottom: 50% !important;
