@@ -132,6 +132,8 @@ import 'vue-super-player/lib/vue-super-player.css'
 4、1.0.3   修复bug
 5、1.0.4   新增API：getFullscreen
 6、1.0.5   修复IOS异常兼容移动端
+7、1.0.6   简化结构
+6、1.0.7   升级版本
 ```
 
 ### 参考
