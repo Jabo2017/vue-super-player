@@ -2,8 +2,8 @@
 	<div class="home">
 		<img alt="Vue logo" src="../assets/logo.png" />
 
-		<div  style="width: 300px; height: 300px; margin-bottom: 30px;">
-			<spuerPlayer ref="player" style="width: 300px; height: 300px;" />
+		<div  style="width: 600px; height: 300px; margin-bottom: 30px;">
+			<spuerPlayer ref="player" style="width: 600px; height: 300px;" />
 		</div>
 
 		<!-- <div style="width: 400px; height: 400px;" v-if="flag">
@@ -47,15 +47,18 @@ export default {
 
 	methods: {
 		player() {
-      this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8');
+      // this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8');
+      // this.$refs.player.loadPlayer('https://bd41f9e82b5749738bacd020487d5292.apigw.cn-east-3.huaweicloud.com/live/work003?app=vis&stream=channel_76323456271320000088');
+      this.$refs.player.loadPlayer('http://localhost:8081/cyberplayer-demo.flv');
 			// this.$refs.player.loadPlayer('rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b');
 			// this.$refs.player2.loadPlayer('http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8');
 		},
 		changeUrl() {
-			this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/b374fade33b84c34822e8d54cb80d34b.m3u8');
+			this.$refs.player.loadPlayer('http://hls01open.ys7.com/openlive/847a2635381e4fc4b17a0f005711fd7f.m3u8');
 		},
 		changeUrl2() {
-			this.$refs.player.loadPlayer('rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b');
+			// this.$refs.player.loadPlayer('rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b');
+			this.$refs.player.loadPlayer('http://localhost:8081/cyberplayer-demo.flv');
 		},
 		triggePlayer(){
 			this.flag = !this.flag

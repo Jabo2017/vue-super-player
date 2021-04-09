@@ -105,7 +105,7 @@ import 'vue-super-player/lib/vue-super-player.css'
 		// 3. exactfit:改变宽高比缩到最大；
 		// 4.fill:剪切并缩放到最大（默认方式为uniform）
 		type: String,
-		default: 'exactfit'
+		default: 'fill'
 	}
 
 ```
@@ -125,16 +125,38 @@ import 'vue-super-player/lib/vue-super-player.css'
 ```
 
 #### 版本说明
-```
-1、1.0.0： 初始化版本
-2、1.0.1   新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
-3、1.0.2   新增API：getStatus、getDuration、setSeek
-4、1.0.3   修复bug
-5、1.0.4   新增API：getFullscreen
-6、1.0.5   修复IOS异常兼容移动端
-7、1.0.6   简化结构
-6、1.0.7   升级版本
-```
+
+##### 1.0.8
+* 优化资源回收
+* 扩展视频伸缩
+
+##### 1.0.7
+* 升级版本
+
+##### 1.0.6
+* 简化结构
+
+##### 1.0.5
+* 修复IOS异常兼容移动端
+
+##### 1.0.4
+* 新增API：getFullscreen
+
+##### 1.0.3
+* 修复bug
+
+##### 1.0.2
+* 新增API：getStatus、getDuration、setSeek
+
+##### 1.0.1
+* 新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
+
+##### 1.0.0
+*  初始化版本
+
+### 存在问题
+* 版本1.0.8， 阿里云版本不同流切换存在内存资源回收问题，ck版本flv H5版本暂不支持
+
 
 ### 参考
 1.  [阿里云播放器配置](https://helpcdn.aliyun.com/document_detail/125572.html?spm=a2c4g.11186623.4.1.27961c4cl6VC7x)

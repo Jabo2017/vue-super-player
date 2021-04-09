@@ -1,147 +1,148 @@
 <template>
-  <div class="playe-wrap" ref="playerWrap" :id="playerId" :style="playStyle"></div>
+  <div
+    :class="['playe-wrap', stretching ? stretching : '']"
+    ref="playerWrap"
+    :id="playerId"
+    :style="playStyle"
+  ></div>
 </template>
 
 <script>
 export default {
-  name: 'vue-super-player',
+  name: "vue-super-player",
   props: {
     // 播放器样式：内联样式
     playStyle: {
       type: String,
-      default: 'width:100%; height:100%'
+      default: "width:100%; height:100%",
     },
     // 版本 ckSdk
     cksdk: {
       type: String,
-      default: 'https://fjycjd_admin.gitee.io/cdn/ckplayer/ckplayer.min.js'
+      default: "https://fjycjd_admin.gitee.io/cdn/ckplayer/ckplayer.min.js",
     },
     // 版本 阿里云
     alisdk: {
       type: String,
       // default: 'https://g.alicdn.com/de/prismplayer/2.8.8/aliplayer-min.js'
-      default: 'https://g.alicdn.com/de/prismplayer/2.9.1/aliplayer-min.js'
+      default: "https://g.alicdn.com/de/prismplayer/2.9.3/aliplayer-min.js",
     },
     // 版本 腾讯
     tcsdk: {
       type: String,
       // default: 'https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js'
       // https://cloudcache.tencent-cloud.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js
-      default: 'https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js'
+      default:
+        "https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js",
     },
     bdsdk: {
       // 版本 sdk
       type: String,
       // default: 'https://fjycjd_admin.gitee.io/cdn/bplayer/cyberplayer.js'
-      default: 'https://bce.bdstatic.com/jwplayer/3.5.2/cyberplayer.js'
+      default: "https://bce.bdstatic.com/jwplayer/3.5.2/cyberplayer.js",
     },
     ak: {
       // 授权ak
       type: String,
-      default: '69eeea78ae7e43d1ab4ad010565d9c9d'
+      default: "69eeea78ae7e43d1ab4ad010565d9c9d",
     },
     // 视频源
     source: {
       type: String,
-      default: ''
+      default: "",
     },
     // 是否是直播视频
     live: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 播放结束后是否循环播放
     loop: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autoplay: {
       // 建议 false : 一些浏览器这样会报错
       // 播放器是否自动播放
       type: Boolean,
-      default: true
+      default: true,
     },
     poster: {
       // 设置媒体流的预览图
       type: String,
-      default: ''
+      default: "",
     },
     variable: {
       // ck 专属
       //调用播放器的函数名称
       type: String,
-      default: 'player'
+      default: "player",
     },
     flash: {
       // 是否强制使用flashplayer播放
       type: Boolean,
-      default: false
+      default: false,
     },
     // 指定h5 播发器：【ali、ck、tc、bd】
     h5player: {
       type: String,
-      default: 'bd'
+      default: "ali",
     },
     // flash 播放器：默认 ck
     flashplayer: {
       type: String,
-      default: 'bd'
+      default: "bd",
     },
     playsinline: {
       // H5是否内置播放，有的Android浏览器不起作用。
       type: Boolean,
-      default: true
+      default: true,
     },
     preload: {
       // ali 专属
       // 播放器自动加载，目前仅h5可用。
       type: Boolean,
-      default: true
+      default: true,
     },
     // Safari浏览器可以启用Hls插件播放，Safari 11除外。
     useHlsPluginForSafari: {
       // ali 专属
       type: Boolean,
-      default: true
+      default: true,
     },
     wording: {
       // tc 专属
       type: Object,
       default: () => {
         return {
-          4: '当前直播流需要flash支持,请开启flash'
+          4: "当前直播流需要flash支持,请开启flash",
         };
-      }
+      },
     },
     x5player: {
       type: Boolean,
-      default: false
+      default: false,
     },
     stretching: {
-      // bd 专属
       // 设置播放器缩放方式，缩放方式分为：
       // 1.none:不缩放；
       // 2.uniform:添加黑边缩放；
       // 3. exactfit:改变宽高比缩到最大；
       // 4.fill:剪切并缩放到最大（默认方式为uniform）
       type: String,
-      default: 'exactfit'
-    }
+      default: "fill",
+    },
   },
   data() {
     return {
-      playerId:
-        'superplayer_' +
-        Math.random()
-          .toString(36)
-          .substr(2),
+      playerId: "superplayer_" + Math.random().toString(36).substr(2),
       instance: null, // h5 实例
       flashInstall: null, // flash 实例
       ckInstall: null, // ck 实例
       aliInstance: null, //ali 实例
       tcInstance: null, //tc 实例
       bdInstance: null, //bd 实例
-      currentPlayerType: 'h5' // 当前播放器类型：h5、flash
+      currentPlayerType: "h5", // 当前播放器类型：h5、flash
     };
   },
   methods: {
@@ -151,9 +152,9 @@ export default {
      */
     loadPlayer(url) {
       let sourceUrl = url ? url : this.source;
-      if (sourceUrl.match(/rtmp|.flv/)) {
-        this.currentPlayerType = 'flash';
-        if (this.flashplayer == 'ck') {
+      if (sourceUrl.match(/rtmp/)) {
+        this.currentPlayerType = "flash";
+        if (this.flashplayer == "ck") {
           if (window.ckplayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
@@ -161,19 +162,19 @@ export default {
               this.insertScriptTag(sourceUrl);
             });
           }
-        } else if (this.flashplayer == 'ali') {
+        } else if (this.flashplayer == "ali") {
           if (window.Aliplayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
             this.insertScriptTag(sourceUrl);
           }
-        } else if (this.flashplayer == 'tc') {
+        } else if (this.flashplayer == "tc") {
           if (window.TcPlayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
             this.insertScriptTag(sourceUrl);
           }
-        } else if (this.flashplayer == 'bd') {
+        } else if (this.flashplayer == "bd") {
           if (window.cyberplayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
@@ -181,8 +182,8 @@ export default {
           }
         }
       } else {
-        this.currentPlayerType = 'h5';
-        if (this.h5player == 'ck') {
+        this.currentPlayerType = "h5";
+        if (this.h5player == "ck") {
           if (window.ckplayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
@@ -190,19 +191,19 @@ export default {
               this.insertScriptTag(sourceUrl);
             });
           }
-        } else if (this.h5player == 'ali') {
+        } else if (this.h5player == "ali") {
           if (window.Aliplayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
             this.insertScriptTag(sourceUrl);
           }
-        } else if (this.h5player == 'tc') {
+        } else if (this.h5player == "tc") {
           if (window.TcPlayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
             this.insertScriptTag(sourceUrl);
           }
-        } else if (this.h5player == 'bd') {
+        } else if (this.h5player == "bd") {
           if (window.cyberplayer !== undefined) {
             this.initPlayer(sourceUrl);
           } else {
@@ -216,46 +217,48 @@ export default {
      * 插入脚本
      */
     insertScriptTag(url) {
-      let sdk = '',
-        playerName = '';
-      if (this.currentPlayerType == 'flash') {
-        if (this.flashplayer == 'ali') {
+      let sdk = "",
+        playerName = "";
+      if (this.currentPlayerType == "flash") {
+        if (this.flashplayer == "ali") {
           sdk = this.alisdk;
-          playerName = 'ali';
-        } else if (this.flashplayer == 'ck') {
+          playerName = "ali";
+        } else if (this.flashplayer == "ck") {
           sdk = this.cksdk;
-          playerName = 'ck';
-        } else if (this.flashplayer == 'tc') {
+          playerName = "ck";
+        } else if (this.flashplayer == "tc") {
           sdk = this.tcsdk;
-          playerName = 'tc';
-        } else if (this.flashplayer == 'bd') {
+          playerName = "tc";
+        } else if (this.flashplayer == "bd") {
           sdk = this.bdsdk;
-          playerName = 'bd';
+          playerName = "bd";
         }
       } else {
-        if (this.h5player == 'ali') {
+        if (this.h5player == "ali") {
           sdk = this.alisdk;
-          playerName = 'ali';
-        } else if (this.h5player == 'ck') {
+          playerName = "ali";
+        } else if (this.h5player == "ck") {
           sdk = this.cksdk;
-          playerName = 'ck';
-        } else if (this.h5player == 'tc') {
+          playerName = "ck";
+        } else if (this.h5player == "tc") {
           sdk = this.tcsdk;
-          playerName = 'tc';
-        } else if (this.h5player == 'bd') {
+          playerName = "tc";
+        } else if (this.h5player == "bd") {
           sdk = this.bdsdk;
-          playerName = 'bd';
+          playerName = "bd";
         }
       }
 
-      let playerScriptTag = document.getElementById(playerName + 'playerScriptTag');
+      let playerScriptTag = document.getElementById(
+        playerName + "playerScriptTag"
+      );
       // 如果这个tag不存在，则生成相关代码tag以加载代码
       if (playerScriptTag === null) {
-        playerScriptTag = document.createElement('script');
-        playerScriptTag.type = 'text/javascript';
+        playerScriptTag = document.createElement("script");
+        playerScriptTag.type = "text/javascript";
         playerScriptTag.src = sdk;
-        playerScriptTag.id = playerName + 'playerScriptTag';
-        let s = document.getElementsByTagName('body')[0];
+        playerScriptTag.id = playerName + "playerScriptTag";
+        let s = document.getElementsByTagName("body")[0];
         s.appendChild(playerScriptTag);
       }
       if (playerScriptTag.loaded) {
@@ -270,11 +273,11 @@ export default {
           });
 
           if (playerScriptTag.loaded) {
-            playerScriptTag.removeEventListener('load', loadReponse);
+            playerScriptTag.removeEventListener("load", loadReponse);
             playerScriptTag.loaded = false;
           }
         };
-        playerScriptTag.addEventListener('load', loadReponse);
+        playerScriptTag.addEventListener("load", loadReponse);
       }
     },
     /**
@@ -282,24 +285,24 @@ export default {
      * 初始化播放器
      */
     initPlayer(url) {
-      if (this.currentPlayerType == 'flash') {
-        if (this.flashplayer == 'ck') {
+      if (this.currentPlayerType == "flash") {
+        if (this.flashplayer == "ck") {
           this.initCkPlayer(url);
-        } else if (this.flashplayer == 'ali') {
+        } else if (this.flashplayer == "ali") {
           this.initAliPlayer(url);
-        } else if (this.flashplayer == 'tc') {
+        } else if (this.flashplayer == "tc") {
           this.initTcPlayer(url);
-        } else if (this.flashplayer == 'bd') {
+        } else if (this.flashplayer == "bd") {
           this.initBdPlayer(url);
         }
       } else {
-        if (this.h5player == 'ck') {
+        if (this.h5player == "ck") {
           this.initCkPlayer(url);
-        } else if (this.h5player == 'ali') {
+        } else if (this.h5player == "ali") {
           this.initAliPlayer(url);
-        } else if (this.h5player == 'tc') {
+        } else if (this.h5player == "tc") {
           this.initTcPlayer(url);
-        } else if (this.h5player == 'bd') {
+        } else if (this.h5player == "bd") {
           this.initBdPlayer(url);
         }
       }
@@ -311,27 +314,27 @@ export default {
     initCkPlayer(url) {
       let videoObject = {
         playerID: this.playerId,
-        container: '#' + this.playerId,
+        container: "#" + this.playerId,
         variable: this.variable,
         autoplay: this.autoplay,
         flash: this.flash,
         video: url,
         live: this.live,
         loop: this.loop,
-        poster: this.poster
+        poster: this.poster,
       };
       /* eslint-disable */
       this.ckInstall = new ckplayer(videoObject);
       this.$nextTick(() => {
         let boxEle = document.getElementById(this.playerId),
-          videoEle = '';
+          videoEle = "";
         if (boxEle) {
-          videoEle = boxEle.querySelector('video');
+          videoEle = boxEle.querySelector("video");
           if (videoEle) {
-            videoEle.setAttribute('playsinline', true);
-            videoEle.setAttribute('x5-playsinline', true);
-            videoEle.setAttribute('webkit-playsinline', true);
-            videoEle.setAttribute('x5-video-player-type', true);
+            videoEle.setAttribute("playsinline", true);
+            videoEle.setAttribute("x5-playsinline", true);
+            videoEle.setAttribute("webkit-playsinline", true);
+            videoEle.setAttribute("x5-video-player-type", true);
           }
         }
       });
@@ -341,22 +344,23 @@ export default {
      * ali 播放器: 目前只支持同种格式（mp4/flv/m3u8）之间切换。暂不支持直播rtmp流切换。
      */
     initAliPlayer(url) {
+      this.dispose();
       if (!this.aliInstance) {
         this.aliInstance = window.Aliplayer({
           id: this.playerId,
           autoplay: this.autoplay,
-          width: '100%',
-          height: '100%',
+          width: "100%",
+          height: "100%",
           isLive: this.live,
           rePlay: this.loop,
           preload: this.preload,
           playsinline: this.playsinline,
           source: url,
           cover: this.poster,
-          useHlsPluginForSafari: this.useHlsPluginForSafari
+          useHlsPluginForSafari: this.useHlsPluginForSafari,
         });
       } else {
-        this.aliInstance.loadByUrl(url);
+        this.loadByUrl(url);
       }
     },
     /**
@@ -374,7 +378,7 @@ export default {
           autoplay: this.autoplay, //iOS 下 safari 浏览器是不开放这个能力的
           poster: this.poster,
           wording: this.wording,
-          x5_player: this.x5player
+          x5_player: this.x5player,
         });
       } else {
         this.tcInstance.load(url);
@@ -388,19 +392,19 @@ export default {
       this.bdInstance = cyberplayer(this.playerId).setup({
         ak: this.ak,
         file: url,
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
         stretching: this.stretching,
         autoStart: this.autoplay,
         image: this.poster,
-        repeat: this.loop
+        repeat: this.loop,
       });
     },
     /**
      *直接播放视频url，time为可选值（单位秒）目前只支持同种格式（mp4/flv/m3u8）之间切换暂不支持直播rtmp流切换
      *@argument url 视频地址
      */
-    loadByUrl: function(url) {
+    loadByUrl: function (url) {
       this.loadPlayer(url);
     },
     /**
@@ -561,35 +565,59 @@ export default {
       if (this.ckInstall) {
         this.ckInstall.videoSeek(time);
       }
-    }
+    },
+    /**
+     * 播放器销毁
+     */
+    dispose() {
+      this.pause();
+      // 移除当前播放器
+      if (this.bdInstance) {
+        this.bdInstance.remove();
+        this.bdInstance = null;
+      }
+      if (this.aliInstance) {
+        this.aliInstance.dispose();
+        this.aliInstance = null;
+      }
+      if (this.tcInstance) {
+        this.tcInstance.destroy();
+        this.tcInstance = null;
+      }
+      this.ckInstall = null;
+    },
   },
   beforeDestroy() {
-    // 移除当前播放器
-    if (this.bdInstance) {
-      this.bdInstance.remove();
-      this.bdInstance = null;
-    }
-    if (this.aliInstance) {
-      this.aliInstance.dispose();
-      this.aliInstance = null;
-    }
-    if (this.tcInstance) {
-      this.tcInstance.destroy();
-      this.tcInstance = null;
-    }
-    this.ckInstall = null;
-  }
+    this.dispose();
+  },
 };
 </script>
 
 <!-- @import 'https://g.alicdn.com/de/prismplayer/2.8.8/skins/default/aliplayer-min.css'; -->
 <style lang="postcss">
-@import 'https://g.alicdn.com/de/prismplayer/2.9.1/skins/default/aliplayer-min.css';
+@import "https://g.alicdn.com/de/prismplayer/2.9.1/skins/default/aliplayer-min.css";
 .prism-big-play-btn {
   left: 50% !important;
   bottom: 50% !important;
   transform: translate(-32px, 32px);
 }
+
+.playe-wrap video {
+  object-fit: fill;
+}
+
+.playe-wrap.exactfit video {
+  object-fit: cover;
+}
+
+.playe-wrap.none video {
+  object-fit: none;
+}
+
+.playe-wrap.uniform video {
+  object-fit: contain;
+}
+
 
 .vcp-bigplay {
   display: none;
