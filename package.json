@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "private": false,
   "type": "module",
+  "packageManager": "pnpm@10.34.5",
   "description": "多内核视频播放器组件（Vue 3 + TS）：原生 / hls.js / flv.js / Aliplayer 可插拔，自动检测播放格式",
   "keywords": [
     "vue",
