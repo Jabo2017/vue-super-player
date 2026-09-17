@@ -1,5 +1,9 @@
 # vue-super-player
 
+[![npm version](https://img.shields.io/npm/v/vue-super-player.svg)](https://www.npmjs.com/package/vue-super-player)
+[![npm downloads](https://img.shields.io/npm/dm/vue-super-player.svg)](https://www.npmjs.com/package/vue-super-player)
+[![license](https://img.shields.io/npm/l/vue-super-player.svg)](./LICENSE)
+
 **多内核视频播放器组件（Vue 3 + TypeScript）**：原生 / hls.js / flv.js / Aliplayer 四个内核可插拔，按播放地址自动检测内核，统一 props / 事件 / 方法。
 
 > Vue 2 时代的 [1.x 版本](https://github.com/Jabo2017/vue-super-player/tree/1.x)（`npm i vue-super-player@1`）已停止维护。v2 是全新重写。
