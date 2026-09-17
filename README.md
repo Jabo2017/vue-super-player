@@ -2,7 +2,7 @@
 
 **多内核视频播放器组件（Vue 3 + TypeScript）**：原生 / hls.js / flv.js / Aliplayer 四个内核可插拔，按播放地址自动检测内核，统一 props / 事件 / 方法。
 
-> Vue 2 时代的 1.x 版本已停止维护（源码在 Gitee 私有仓库）。v2 是全新重写。
+> Vue 2 时代的 [1.x 版本](https://github.com/Jabo2017/vue-super-player/tree/1.x)（`npm i vue-super-player@1`）已停止维护。v2 是全新重写。
 
 ## 在线演示
 
