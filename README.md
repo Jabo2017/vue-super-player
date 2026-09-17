@@ -1,165 +1,106 @@
 # vue-super-player
 
-#### 介绍
-超级播放器:基于多个内核播放器整合开发
+**多内核视频播放器组件（Vue 3 + TypeScript）**：原生 / hls.js / flv.js / Aliplayer 四个内核可插拔，按播放地址自动检测内核，统一 props / 事件 / 方法。
 
+> Vue 2 时代的 1.x 版本已停止维护（源码在 Gitee 私有仓库）。v2 是全新重写。
 
-#### 安装教程
+## 在线演示
 
-```
-npm i vue-super-player -save
-```
+https://jabo2017.github.io/vue-super-player/
 
-#### 使用说明
-```
-import player from 'vue-super-player'
-import 'vue-super-player/lib/vue-super-player.css'
-```
+## 为什么是多内核
 
-#### 参数
-```
-	// 播放器样式：内联样式
-	playStyle: {
-		type: String,
-		default: 'width:100%; height:100%'
-	},
-	// 视频源
-	source: {
-		type: String,
-		default: ''
-	},
-	// 是否是直播视频
-	live: {
-		type: Boolean,
-		default: true
-	},
-	// 播放结束后是否循环播放
-	loop: {
-		type: Boolean,
-		default: false
-	},
-	autoplay: {
-		// 建议 false : 一些浏览器这样会报错
-		// 播放器是否自动播放
-		type: Boolean,
-		default: true
-	},
-	// 设置媒体流的预览图
-	poster: {
-		type: String,
-		default: ''
-	},
-	variable: {  // ck 专属
-		//调用播放器的函数名称
-		type: String,
-		default: 'player'
-	},
-	flash: {
-		// 是否强制使用flashplayer播放
-		type: Boolean,
-		default: false
-	},
-	// 指定h5 播发器：【ali、ck、tc、bd】
-	h5player: {
-		type: String,
-		default: 'bd'
-	},
-	// flash 播放器：默认 ck
-	flashplayer: {
-		type: String,
-		default: 'bd'
-	},
-	playsinline: {
-		// H5是否内置播放，有的Android浏览器不起作用。
-		type: Boolean,
-		default: true
-	},
-	preload: { // ali 专属
-		// 播放器自动加载，目前仅h5可用。
-		type: Boolean,
-		default: true
-	},
-	// Safari浏览器可以启用Hls插件播放，Safari 11除外。
-	useHlsPluginForSafari: {  // ali 专属
-		type: Boolean,
-		default: true
-	},
-	wording: {
-		// tc 专属
-		type: Object,
-		default: () => {
-			return {
-				4: '当前直播流需要flash支持,请开启flash'
-			};
-		}
-	},
-	x5player: {
-		type: Boolean,
-		default: false
-	},
-	stretching: {
-		// bd 专属
-		// 设置播放器缩放方式，缩放方式分为：
-		// 1.none:不缩放；
-		// 2.uniform:添加黑边缩放；
-		// 3. exactfit:改变宽高比缩到最大；
-		// 4.fill:剪切并缩放到最大（默认方式为uniform）
-		type: String,
-		default: 'fill'
-	}
+没有单一内核能同时优雅覆盖所有场景：
 
+| 场景 | 内核 | 说明 |
+|---|---|---|
+| mp4 / webm 点播 | `native` | 原生 video，零依赖 |
+| m3u8 点播/直播 | `hls` | hls.js（Safari 自动回退原生 HLS） |
+| HTTP-FLV 直播 | `flv` | flv.js（需 MSE） |
+| 阿里云 vid+playauth / 私有加密流 | `ali` | 复用 [vue-aliplay-player](https://github.com/Jabo2017/vue-aliplay-player)（可选安装） |
+
+hls.js / flv.js 均为 **CDN 懒加载**：用到哪个内核才加载哪个脚本，主包 gzip 仅 ~4KB。
+
+## 安装
+
+```bash
+npm install vue-super-player
 ```
 
+`vue`（^3.2）为 peer dependency；使用 `ali` 内核需另装 `vue-aliplay-player`（可选 peer）。
 
-#### 方法
+## 快速上手
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import SuperPlayer from 'vue-super-player'
+
+const source = ref('https://example.com/live.m3u8') // 自动选中 hls 内核
+</script>
+
+<template>
+  <SuperPlayer
+    :source="source"
+    is-live
+    play-style="width:100%;aspect-ratio:16/9"
+    @error="(e) => console.error(e)"
+  />
+</template>
 ```
-  1、loadPlayer(url)  // 加载播放器
-  2、play()  // 播放API，ck直播模式不支持 【1.0.1+】
-  3、pause()  // 暂停API，ck直播模式不支持 【1.0.1+】
-  4、setMute()  // 静音API，true : 关闭声音；false : 打开声音，ck直播模式不支持 【1.0.1+】
-  5、setFullscreen()  // 全屏API，true : 全屏；false : 非全屏 ，ck直播模式不支持 【1.0.1+】
-  6、getStatus() // 返回播放器状态，不同播放器返回参数存在差异 【1.0.2+】
-  7、getDuration() // 返回播放时长,对点播有用，不同播放器返回参数存在差异  【1.0.2+】
-  8、setSeek(time) // 设置目标播放时间，对点播有用【1.0.2+】
-  9、getFullscreen // 获取全屏状态：仅bd、ali支持【1.0.4+】
+
+手动指定内核（如阿里云加密流）：
+
+```vue
+<SuperPlayer :source="src" kernel="ali" :ali-license="license" />
 ```
 
-#### 版本说明
+自定义内核（实现 `Kernel` 接口注入即可）：
 
-##### 1.0.8
-* 优化资源回收
-* 扩展视频伸缩
+```ts
+const myKernel: Kernel = {
+  name: 'my-kernel',
+  canPlay: (src) => src.endsWith('.ext'),
+  create: (options) => myPlayerInstance,
+}
+// <SuperPlayer :kernels="{ 'my-kernel': myKernel }" kernel="my-kernel" />
+```
 
-##### 1.0.7
-* 升级版本
+## Props
 
-##### 1.0.6
-* 简化结构
+| Prop | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `source` | `string` | 必填 | 播放地址，变化时自动重建 |
+| `kernel` | `string` | `'auto'` | `'auto'` 按扩展名检测；或 `native` / `hls` / `flv` / `ali` / 自定义内核名 |
+| `autoplay` | `boolean` | `false` | 自动播放（受浏览器策略限制，常配合 `muted`） |
+| `muted` | `boolean` | `false` | 静音 |
+| `loop` | `boolean` | `false` | 循环 |
+| `poster` | `string` | `''` | 封面 |
+| `isLive` | `boolean` | `false` | 直播模式（flv/ali 内核行为不同） |
+| `playsinline` | `boolean` | `true` | 移动端内联播放 |
+| `kernels` | `Record<string, Kernel>` | `{}` | 注入自定义内核 |
+| `hlsJsUrl` / `flvJsUrl` | `string` | jsdelivr | hls.js / flv.js CDN 地址，可换自托管 |
+| `aliSdkUrl` / `aliSdkCssUrl` / `aliLicense` | — | 2.27.1 | Aliplayer SDK 与 License 配置，见 [vue-aliplay-player README](https://github.com/Jabo2017/vue-aliplay-player#license-说明) |
 
-##### 1.0.5
-* 修复IOS异常兼容移动端
+## 事件
 
-##### 1.0.4
-* 新增API：getFullscreen
+`ready` `play` `playing` `pause` `ended` `waiting` `error(err?)` `timeupdate(currentTime, duration)` `kernelchange(name)`
 
-##### 1.0.3
-* 修复bug
+## 暴露方法
 
-##### 1.0.2
-* 新增API：getStatus、getDuration、setSeek
+`play` `pause` `replay` `seek(t)` `getCurrentTime` `getDuration` `getVolume` `setVolume(v)` `setSpeed(s)` `getStatus` `dispose`
 
-##### 1.0.1
-* 新增API：play、pause、setMute、setFullscreen，优化播放器资源回收
+## 本地开发
 
-##### 1.0.0
-*  初始化版本
+```bash
+pnpm install
+pnpm dev          # demo 页
+pnpm typecheck    # vue-tsc
+pnpm test         # vitest
+pnpm build        # 库产物（ES + UMD + d.ts）
+pnpm build:demo   # Pages 演示页
+```
 
-### 存在问题
-* 版本1.0.8， 阿里云版本不同流切换存在内存资源回收问题，ck版本flv H5版本暂不支持
+## License
 
-
-### 参考
-1.  [阿里云播放器配置](https://helpcdn.aliyun.com/document_detail/125572.html?spm=a2c4g.11186623.4.1.27961c4cl6VC7x)
-2.  [ckplayer](http://www.ckplayer.com/manualX/23.html)
-3.  [百度播放器](https://cloud.baidu.com/doc/MCT/s/yjwvz4xm8)
-4.  [腾讯播放器](https://cloud.tencent.com/document/product/881/20207)
+[MIT](./LICENSE)
