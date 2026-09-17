@@ -215,16 +215,3 @@ onBeforeUnmount(() => {
   dispose()
 })
 </script>
-
-<style>
-.vsp-root {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  overflow: hidden;
-}
-.vsp-root video {
-  display: block;
-}
-</style>

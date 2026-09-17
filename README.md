@@ -29,6 +29,8 @@ npm install vue-super-player
 
 `vue`（^3.2）为 peer dependency；使用 `ali` 内核需另装 `vue-aliplay-player`（可选 peer）。
 
+组件自带样式（`.vsp-root` 容器）在引入时自动注入，**无需额外 `import` CSS 文件**。
+
 ## 快速上手
 
 ```vue

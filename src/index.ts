@@ -6,6 +6,10 @@ import { flvKernel, ensureFlvJs } from './kernels/flv'
 import { aliKernel } from './kernels/ali'
 import { HLS_JS_URL, FLV_JS_URL } from './types'
 import { extOf } from './kernels/native'
+import { injectStyle } from './style'
+
+// 组件自带样式在运行时注入，无需使用者手动 import CSS
+injectStyle()
 
 export default SuperPlayer
 export {
