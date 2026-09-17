@@ -10,6 +10,8 @@
 
 ## 在线演示
 
+![在线演示](docs/demo.png)
+
 https://jabo2017.github.io/vue-super-player/
 
 ## 为什么是多内核
