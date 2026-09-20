@@ -1,12 +1,12 @@
 {
   "name": "vue-super-player",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": false,
   "license": "MIT",
   "author": "Jabo <jabo@users.noreply.github.com>",
   "type": "module",
   "packageManager": "pnpm@10.34.5",
-  "description": "多内核视频播放器组件（Vue 3 + TS）：原生 / hls.js / flv.js / Aliplayer 可插拔，自动检测播放格式",
+  "description": "多内核视频播放器组件（Vue 3 + TS）：原生 / hls.js / mpegts.js / Aliplayer 可插拔，自动检测播放格式",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jabo2017/vue-super-player.git"
@@ -23,6 +23,8 @@
     "hls",
     "m3u8",
     "flv",
+    "http-flv",
+    "mpegts",
     "live",
     "aliplayer",
     "multi-kernel"

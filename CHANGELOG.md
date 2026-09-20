@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.1.0 (2026-09-20)
+
+FLV 内核底层从 flv.js 切换为 mpegts.js。
+
+### 变更
+
+- `flv` 内核底层库：flv.js → [mpegts.js](https://github.com/xqq/mpegts.js)。两者同作者（xqq）、API 基本一致，但 **flv.js 最后发布于 2021-09，已停止维护**，mpegts.js 是其官方继任者且至今仍在发版
+- 直播场景默认 `enableStashBuffer: false` 降低延迟，并开启 `enableWorker` 多线程转封装
+
+### 新增
+
+- `mpegtsJsUrl` prop 与 `MPEGTS_JS_URL` / `ensureMpegts` 导出，可换成自托管 CDN 地址
+
+### 废弃
+
+- `flvJsUrl` prop 与 `FLV_JS_URL` / `ensureFlvJs` 导出保留为兼容别名（内核仍会读取），计划在 3.0 移除
+
 ## 2.0.0 (2026-09-17)
 
 Vue 3 全量重写，多内核架构。

@@ -2,9 +2,9 @@ import type { App } from 'vue'
 import SuperPlayer from './SuperPlayer.vue'
 import { nativeKernel } from './kernels/native'
 import { hlsKernel, ensureHlsJs } from './kernels/hls'
-import { flvKernel, ensureFlvJs } from './kernels/flv'
+import { flvKernel, ensureMpegts, ensureFlvJs } from './kernels/flv'
 import { aliKernel } from './kernels/ali'
-import { HLS_JS_URL, FLV_JS_URL } from './types'
+import { HLS_JS_URL, MPEGTS_JS_URL, FLV_JS_URL } from './types'
 import { extOf } from './kernels/native'
 import { injectStyle } from './style'
 
@@ -19,8 +19,12 @@ export {
   flvKernel,
   aliKernel,
   ensureHlsJs,
+  ensureMpegts,
+  /** @deprecated 请改用 `ensureMpegts` */
   ensureFlvJs,
   HLS_JS_URL,
+  MPEGTS_JS_URL,
+  /** @deprecated 请改用 `MPEGTS_JS_URL` */
   FLV_JS_URL,
   extOf,
 }

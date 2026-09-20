@@ -68,7 +68,7 @@ const spyKernel: Record<string, Kernel> = {
   <div class="page">
     <header>
       <h1>vue-super-player <span class="ver">v2 · 多内核</span></h1>
-      <p class="sub">native / hls.js / flv.js / ali 可插拔内核 · 按格式自动检测 · CDN 懒加载</p>
+      <p class="sub">native / hls.js / mpegts.js / ali 可插拔内核 · 按格式自动检测 · CDN 懒加载</p>
     </header>
 
     <main>

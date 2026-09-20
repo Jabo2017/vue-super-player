@@ -28,6 +28,9 @@ const props = withDefaults(
     /** 自定义/注入内核（测试或扩展），与内置内核合并，同名覆盖 */
     kernels?: Record<string, Kernel>
     hlsJsUrl?: string
+    /** mpegts.js CDN 地址（flv 内核底层库），可换自托管 */
+    mpegtsJsUrl?: string
+    /** @deprecated 请改用 `mpegtsJsUrl` */
     flvJsUrl?: string
     aliSdkUrl?: string
     aliSdkCssUrl?: string
@@ -45,6 +48,7 @@ const props = withDefaults(
     playStyle: '',
     kernels: () => ({}),
     hlsJsUrl: undefined,
+    mpegtsJsUrl: undefined,
     flvJsUrl: undefined,
     aliSdkUrl: undefined,
     aliSdkCssUrl: undefined,
@@ -129,6 +133,7 @@ async function init(source?: string): Promise<void> {
     playsinline: props.playsinline,
     events: handlers,
     hlsJsUrl: props.hlsJsUrl,
+    mpegtsJsUrl: props.mpegtsJsUrl ?? props.flvJsUrl,
     flvJsUrl: props.flvJsUrl,
     aliSdkUrl: props.aliSdkUrl,
     aliSdkCssUrl: props.aliSdkCssUrl,

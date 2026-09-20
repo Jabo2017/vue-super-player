@@ -23,7 +23,9 @@ export interface KernelCreateOptions {
   events: KernelEvents
   /** hls.js CDN 地址（hls 内核自加载），可换自托管 */
   hlsJsUrl?: string
-  /** flv.js CDN 地址（flv 内核自加载），可换自托管 */
+  /** mpegts.js CDN 地址（flv 内核自加载），可换自托管 */
+  mpegtsJsUrl?: string
+  /** @deprecated 请改用 `mpegtsJsUrl`。flv.js 已于 2021 年停止维护，内核底层已切换为 mpegts.js，此处仅为兼容保留 */
   flvJsUrl?: string
   /** Aliplayer SDK js 地址（ali 内核） */
   aliSdkUrl?: string
@@ -62,4 +64,7 @@ export type PlayerStatus = 'idle' | 'ready' | 'playing' | 'paused' | 'ended' | (
 
 /** CDN 脚本地址（jsdelivr），可替换为自托管 */
 export const HLS_JS_URL = 'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js'
-export const FLV_JS_URL = 'https://cdn.jsdelivr.net/npm/flv.js@1/dist/flv.min.js'
+/** flv 内核底层库：mpegts.js —— flv.js 的官方继任者（同作者 xqq），API 兼容且仍在维护 */
+export const MPEGTS_JS_URL = 'https://cdn.jsdelivr.net/npm/mpegts.js@1/dist/mpegts.min.js'
+/** @deprecated 请改用 `MPEGTS_JS_URL`；保留仅为不破坏既有 import */
+export const FLV_JS_URL = MPEGTS_JS_URL

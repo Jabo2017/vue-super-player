@@ -4,7 +4,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/vue-super-player.svg)](https://www.npmjs.com/package/vue-super-player)
 [![license](https://img.shields.io/npm/l/vue-super-player.svg)](./LICENSE)
 
-**多内核视频播放器组件（Vue 3 + TypeScript）**：原生 / hls.js / flv.js / Aliplayer 四个内核可插拔，按播放地址自动检测内核，统一 props / 事件 / 方法。
+**多内核视频播放器组件（Vue 3 + TypeScript）**：原生 / hls.js / mpegts.js / Aliplayer 四个内核可插拔，按播放地址自动检测内核，统一 props / 事件 / 方法。
 
 > Vue 2 时代的 [1.x 版本](https://github.com/Jabo2017/vue-super-player/tree/1.x)（`npm i vue-super-player@1`）已停止维护。v2 是全新重写。
 
@@ -22,10 +22,14 @@ https://jabo2017.github.io/vue-super-player/
 |---|---|---|
 | mp4 / webm 点播 | `native` | 原生 video，零依赖 |
 | m3u8 点播/直播 | `hls` | hls.js（Safari 自动回退原生 HLS） |
-| HTTP-FLV 直播 | `flv` | flv.js（需 MSE） |
+| HTTP-FLV 直播 | `flv` | mpegts.js（需 MSE） |
 | 阿里云 vid+playauth / 私有加密流 | `ali` | 复用 [vue-aliplay-player](https://github.com/Jabo2017/vue-aliplay-player)（可选安装） |
 
-hls.js / flv.js 均为 **CDN 懒加载**：用到哪个内核才加载哪个脚本，主包 gzip 仅 ~4KB。
+hls.js / mpegts.js 均为 **CDN 懒加载**：用到哪个内核才加载哪个脚本，主包 gzip 仅 ~4KB。
+
+> **关于 FLV 内核的选型**：底层用的是 [mpegts.js](https://github.com/xqq/mpegts.js) 而不是更常见的 flv.js。
+> 两者同作者（xqq），API 基本一致，但 **flv.js 最后发布于 2021-09（已停止维护）**，mpegts.js 是其官方继任者、至今仍在发版。
+> 本库早期版本用的 flv.js，v2.1 起切换为 mpegts.js；`flvJsUrl` prop 与 `FLV_JS_URL` / `ensureFlvJs` 导出保留为兼容别名。
 
 ## 安装
 
@@ -87,7 +91,7 @@ const myKernel: Kernel = {
 | `isLive` | `boolean` | `false` | 直播模式（flv/ali 内核行为不同） |
 | `playsinline` | `boolean` | `true` | 移动端内联播放 |
 | `kernels` | `Record<string, Kernel>` | `{}` | 注入自定义内核 |
-| `hlsJsUrl` / `flvJsUrl` | `string` | jsdelivr | hls.js / flv.js CDN 地址，可换自托管 |
+| `hlsJsUrl` / `mpegtsJsUrl` | `string` | jsdelivr | hls.js / mpegts.js CDN 地址，可换自托管 |
 | `aliSdkUrl` / `aliSdkCssUrl` / `aliLicense` | — | 2.27.1 | Aliplayer SDK 与 License 配置，见 [vue-aliplay-player README](https://github.com/Jabo2017/vue-aliplay-player#license-说明) |
 
 ## 事件

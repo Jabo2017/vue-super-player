@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import SuperPlayer from '../src/SuperPlayer.vue'
 import { extOf, nativeKernel } from '../src/kernels/native'
+import { flvKernel, ensureMpegts, ensureFlvJs } from '../src/kernels/flv'
+import { MPEGTS_JS_URL, FLV_JS_URL } from '../src/types'
 import type { Kernel, KernelCreateOptions, KernelInstance } from '../src/types'
 
 function makeFakeKernel() {
@@ -144,5 +146,133 @@ describe('SuperPlayer', () => {
     })
     await flushPromises()
     expect(wrapper.emitted('error')).toHaveLength(1)
+  })
+})
+
+describe('flvKernel 底层为 mpegts.js（非已停更的 flv.js）', () => {
+  type FakePlayer = {
+    attachMediaElement: ReturnType<typeof vi.fn>
+    load: ReturnType<typeof vi.fn>
+    unload: ReturnType<typeof vi.fn>
+    play: ReturnType<typeof vi.fn>
+    pause: ReturnType<typeof vi.fn>
+    destroy: ReturnType<typeof vi.fn>
+    on: ReturnType<typeof vi.fn>
+    off: ReturnType<typeof vi.fn>
+  }
+  const players: FakePlayer[] = []
+
+  function makeEvents() {
+    return {
+      onReady: vi.fn(),
+      onPlay: vi.fn(),
+      onPlaying: vi.fn(),
+      onPause: vi.fn(),
+      onEnded: vi.fn(),
+      onError: vi.fn(),
+      onTimeupdate: vi.fn(),
+      onWaiting: vi.fn(),
+    }
+  }
+
+  function fullOptions(container: HTMLElement, source: string, isLive: boolean) {
+    return {
+      container,
+      source,
+      autoplay: false,
+      muted: false,
+      loop: false,
+      poster: '',
+      isLive,
+      playsinline: true,
+      events: makeEvents(),
+    }
+  }
+
+  beforeEach(() => {
+    document.body.innerHTML = ''
+    players.length = 0
+    const createPlayer = vi.fn(() => {
+      const player: FakePlayer = {
+        attachMediaElement: vi.fn(),
+        load: vi.fn(),
+        unload: vi.fn(),
+        play: vi.fn(() => Promise.resolve()),
+        pause: vi.fn(),
+        destroy: vi.fn(),
+        on: vi.fn(),
+        off: vi.fn(),
+      }
+      players.push(player)
+      return player
+    })
+    ;(window as unknown as { mpegts: unknown }).mpegts = {
+      isSupported: () => true,
+      Events: { MEDIA_INFO: 'media_info', ERROR: 'error' },
+      ErrorTypes: { NETWORK_ERROR: 'network' },
+      ErrorDetails: {},
+      createPlayer,
+    }
+  })
+
+  it('canPlay 识别 .flv（含 query/hash），排除 m3u8', () => {
+    expect(flvKernel.canPlay('https://a.com/live.flv', true)).toBe(true)
+    expect(flvKernel.canPlay('https://a.com/live.FLV?token=x', true)).toBe(true)
+    expect(flvKernel.canPlay('https://a.com/live.flv#t=1', true)).toBe(true)
+    expect(flvKernel.canPlay('https://a.com/live.m3u8', true)).toBe(false)
+  })
+
+  it('走 createPlayer 工厂函数，地址经 MediaDataSource 传入（mpegts 无 loadSource）', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const inst = await flvKernel.create(fullOptions(container, 'https://a.com/live.flv', true))
+
+    const mpegts = (window as unknown as { mpegts: { createPlayer: ReturnType<typeof vi.fn> } }).mpegts
+    expect(mpegts.createPlayer).toHaveBeenCalledTimes(1)
+    const [dataSource] = mpegts.createPlayer.mock.calls[0] as unknown as [
+      { type: string; url: string; isLive: boolean },
+      Record<string, unknown>,
+    ]
+    expect(dataSource).toMatchObject({ type: 'flv', url: 'https://a.com/live.flv', isLive: true })
+
+    // 不再调用 flv.js 专有的 loadSource，而是 load()
+    expect(players[0].attachMediaElement).toHaveBeenCalled()
+    expect(players[0].load).toHaveBeenCalled()
+
+    inst.dispose()
+    expect(players[0].destroy).toHaveBeenCalled()
+  })
+
+  it('直播关 stash buffer 降延迟，点播开启', async () => {
+    const live = document.createElement('div')
+    await flvKernel.create(fullOptions(live, 'https://a.com/live.flv', true))
+    const vod = document.createElement('div')
+    await flvKernel.create(fullOptions(vod, 'https://a.com/vod.flv', false))
+
+    const mpegts = (window as unknown as { mpegts: { createPlayer: ReturnType<typeof vi.fn> } }).mpegts
+    const liveCfg = mpegts.createPlayer.mock.calls[0][1] as unknown as { enableStashBuffer: boolean }
+    const vodCfg = mpegts.createPlayer.mock.calls[1][1] as unknown as { enableStashBuffer: boolean }
+    expect(liveCfg.enableStashBuffer).toBe(false)
+    expect(vodCfg.enableStashBuffer).toBe(true)
+  })
+
+  it('replay 用 unload + load 重建（因为没有 loadSource）', async () => {
+    const container = document.createElement('div')
+    const inst = await flvKernel.create(fullOptions(container, 'https://a.com/live.flv', true))
+    inst.replay()
+    expect(players[0].unload).toHaveBeenCalled()
+    expect(players[0].load).toHaveBeenCalledTimes(2) // 初次 1 次 + replay 1 次
+  })
+
+  it('环境不支持 MSE 时抛出明确错误', async () => {
+    ;(window as unknown as { mpegts: { isSupported: () => boolean } }).mpegts.isSupported = () => false
+    const container = document.createElement('div')
+    await expect(flvKernel.create(fullOptions(container, 'https://a.com/live.flv', true))).rejects.toThrow(/MSE/)
+  })
+
+  it('CDN 地址已切到 mpegts，旧常量作为兼容别名指向同一地址', () => {
+    expect(MPEGTS_JS_URL).toContain('mpegts.js')
+    expect(FLV_JS_URL).toBe(MPEGTS_JS_URL)
+    expect(ensureFlvJs).toBe(ensureMpegts)
   })
 })
