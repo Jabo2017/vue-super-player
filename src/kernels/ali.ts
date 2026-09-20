@@ -1,17 +1,23 @@
 import type { Kernel, KernelInstance } from '../types'
 import { extOf } from './native'
 
-declare global {
-  interface Window {
-    Aliplayer?: new (
-      options: Record<string, unknown>,
-      ready?: (player: KernelInstance) => void,
-    ) => KernelInstance & {
-      on(event: string, cb: () => void): void
-      off(event: string, cb: () => void): void
-    }
-  }
+/**
+ * Aliplayer 全局构造函数的最小结构。
+ *
+ * 这里刻意用「局部类型 + 断言访问」，而不是 `declare global` 扩展 Window：
+ * vue-aliplay-player@4 自带了 `Window.Aliplayer` 的声明，两边同时扩展会撞成
+ * TS2717。该 peer 是可选依赖，装与不装都必须能通过类型检查，所以不去扩展全局。
+ */
+type AliplayerCtor = new (
+  options: Record<string, unknown>,
+  ready?: (player: KernelInstance) => void,
+) => KernelInstance & {
+  on(event: string, cb: () => void): void
+  off(event: string, cb: () => void): void
 }
+
+const getAliplayerCtor = (): AliplayerCtor | undefined =>
+  (window as unknown as { Aliplayer?: AliplayerCtor }).Aliplayer
 
 /**
  * Aliplayer 内核：复用 vue-aliplay-player v4 的 SDK 加载器（动态 import，
@@ -43,7 +49,7 @@ export const aliKernel: Kernel = {
       options.aliSdkUrl ?? mod.DEFAULT_SDK_JS,
       options.aliSdkCssUrl ?? mod.DEFAULT_SDK_CSS,
     )
-    const Player = window.Aliplayer
+    const Player = getAliplayerCtor()
     if (!Player) throw new Error('Aliplayer SDK 加载失败')
 
     const { events } = options
