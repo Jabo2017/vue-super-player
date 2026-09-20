@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      vue-aliplay-player:
+        specifier: ^4.0.0
+        version: 4.0.0(vue@3.5.42(typescript@5.9.3))
     devDependencies:
       '@types/node':
         specifier: ^24.13.5
@@ -1128,6 +1132,11 @@ packages:
   vscode-uri@3.2.0:
     resolution: {integrity: sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==}
 
+  vue-aliplay-player@4.0.0:
+    resolution: {integrity: sha512-tCgYCW30Cn/hDC9uSW8ZpAIxZnlnhjXLQwlFVZI0DwLbyMPuD7AI7rbdSM8HKBSKxwcJ5w0Xppz6LwYE3PZCAg==}
+    peerDependencies:
+      vue: ^3.2.0
+
   vue-component-type-helpers@3.3.11:
     resolution: {integrity: sha512-LwcxzeliO9fkQcpJG0PoX8X5kmAhKmH9wkpDLxNabwzkQ9Zeib2YVHwFV4pcWmMLfXVfjr/dSV+DaJ3cIPgSNA==}
 
@@ -2118,6 +2127,10 @@ snapshots:
       - msw
 
   vscode-uri@3.2.0: {}
+
+  vue-aliplay-player@4.0.0(vue@3.5.42(typescript@5.9.3)):
+    dependencies:
+      vue: 3.5.42(typescript@5.9.3)
 
   vue-component-type-helpers@3.3.11: {}
 
